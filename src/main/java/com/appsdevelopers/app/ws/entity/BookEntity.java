@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="BooksList")
 @NoArgsConstructor
-public class ListOfBooksEntity implements Serializable {
+public class BookEntity implements Serializable {
 	
 	private static final long serialVersionUID = 3078518063582992060L;
 	

@@ -40,6 +40,6 @@ public class UserEntity implements Serializable {
 	private String mobileNo;
 	
 	@OneToMany(mappedBy="userDetails",cascade=CascadeType.ALL)
-	private List<ListOfBooksEntity> books;
+	private List<BookEntity> books;
 	
 }

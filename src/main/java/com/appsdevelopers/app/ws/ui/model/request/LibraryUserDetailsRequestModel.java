@@ -2,7 +2,7 @@ package com.appsdevelopers.app.ws.ui.model.request;
 
 import java.util.List;
 
-import com.appsdevelopers.app.ws.ui.model.shared.dto.ListOfBooksDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appsdevelopers.app.ws.service.ListOfBooksService;
+import com.appsdevelopers.app.ws.service.BookService;
 import com.appsdevelopers.app.ws.service.UserService;
 import com.appsdevelopers.app.ws.ui.model.request.LibraryUserDetailsRequestModel;
 import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
@@ -28,7 +28,7 @@ public class LibraryUserController {
 	UserService userService;
 	
 	@Autowired
-	ListOfBooksService listOfBooksService;
+	BookService listOfBooksService;
 	
 	@Autowired
 	ModelMapper mapper;

@@ -18,5 +18,5 @@ public class UserDto implements Serializable {
 	private String email;
 	private String password;
 	private String mobileNo;
-	private List<ListOfBooksDto> books;
+	private List<BookDto> books;
 }

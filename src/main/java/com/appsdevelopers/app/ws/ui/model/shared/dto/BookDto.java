@@ -4,7 +4,7 @@ package com.appsdevelopers.app.ws.ui.model.shared.dto;
 import lombok.Data;
 
 @Data
-public class ListOfBooksDto {
+public class BookDto {
 
 	private long id;
 	private String bookId;
