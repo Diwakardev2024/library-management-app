@@ -28,14 +28,14 @@ public class BookEntity implements Serializable {
 	@Column(length=30,nullable=false)
 	private String bookId;
 	
-	@Column(length=30,nullable=false)
+	@Column(length=30,nullable=false,unique=true)
 	private String title;
 	
-	@Column(length=50,nullable=false)
+	@Column(length=70,nullable=false)
 	private String Author;
 	
 	@Column(length=15,nullable=false)
-	private String Isbn_Number;
+	private String ISBN;
 	
 	@Column(length=10,nullable=false)
 	private Float price;

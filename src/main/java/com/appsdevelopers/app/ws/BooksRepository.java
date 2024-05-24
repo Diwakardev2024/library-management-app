@@ -10,8 +10,10 @@ import com.appsdevelopers.app.ws.entity.UserEntity;
 
 
 @Repository
-public interface ListOfBooksRepository extends JpaRepository<BookEntity, Long> {
+public interface BooksRepository extends JpaRepository<BookEntity, Long> {
 	
 	List<BookEntity> findAllByUserDetails(UserEntity userEntity);
+	
+	BookEntity findByBookId(String bookId);
 
 }
