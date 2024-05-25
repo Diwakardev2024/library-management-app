@@ -99,6 +99,20 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public UserDto validateUserId(String userId) {
+		
+		UserDto returnValue = new UserDto();
+		UserEntity userEntity = userRepository.findByUserId(userId);
+
+		if (userEntity == null)
+			throw new RuntimeException("UserId is InValid.");
+		BeanUtils.copyProperties(userEntity, returnValue);
+		
+		return returnValue;
+
+	}
+
 
 	
 }

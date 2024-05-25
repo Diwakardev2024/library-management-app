@@ -11,5 +11,6 @@ public class LibraryBookResponse {
 	private String Author;
 	private String ISBN;
 	private Float price;
+	private Long count;
 
 }

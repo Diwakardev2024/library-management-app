@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class LibraryUserDetailsRequestModel {
+public class UserDetailsRequestModel {
 	
 	@NotNull(message = "firstName can not be null")
 	private String firstName;

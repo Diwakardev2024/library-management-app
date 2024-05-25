@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.appsdevelopers.app.ws.service.BookService;
 import com.appsdevelopers.app.ws.service.UserService;
-import com.appsdevelopers.app.ws.ui.model.request.LibraryUserDetailsRequestModel;
+import com.appsdevelopers.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
 import com.appsdevelopers.app.ws.ui.model.response.LibraryUserResponse;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.UserDto;
@@ -68,7 +68,7 @@ public class LibraryUserController {
 
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public LibraryUserResponse createUser(@Valid @RequestBody LibraryUserDetailsRequestModel userDetails)
+	public LibraryUserResponse createUser(@Valid @RequestBody UserDetailsRequestModel userDetails)
 			throws Exception {
 
 		LibraryUserResponse returnValue = new LibraryUserResponse();

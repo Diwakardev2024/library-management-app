@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.appsdevelopers.app.ws.BooksRepository;
 import com.appsdevelopers.app.ws.entity.BookEntity;
+import com.appsdevelopers.app.ws.entity.BookShelfEntity;
 import com.appsdevelopers.app.ws.exceptions.BookServiceException;
 import com.appsdevelopers.app.ws.service.BookService;
 import com.appsdevelopers.app.ws.shared.Utils;
+import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 
 @Service
@@ -55,7 +57,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public BookDto createBook(BookDto book) {
+	public BookDto addBook(BookDto book) {
 
 		if (bookRepository.findByBookId(book.getBookId()) != null)
 			throw new RuntimeException(" Records already exists ");
@@ -74,7 +76,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public BookDto getBookByBookId(String id) {
-		
+
 		BookDto returnValue = new BookDto();
 		BookEntity bookEntity = bookRepository.findByBookId(id);
 		if (bookEntity == null)
@@ -88,9 +90,45 @@ public class BookServiceImpl implements BookService {
 	public void deleteBook(String id) {
 		BookEntity bookEntity = bookRepository.findByBookId(id);
 		if (bookEntity == null)
-			throw new BookServiceException(com.appsdevelopers.app.ws.ui.model.response.ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+			throw new BookServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		bookRepository.delete(bookEntity);
+
+	}
+
+	@Override
+	public BookDto updateBookCount(String id, long value) {
+
+		// 1. find the book by its Id
+		BookEntity bookEntity = bookRepository.findByBookId(id);
+		// 2. check book id is avaiable or not
+		if (bookEntity == null)
+			throw new BookServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		// 3. update the count value of the book
+		bookEntity.setCount(bookEntity.getCount() + value);
+		// 4. save the updated book object
+		bookEntity = bookRepository.save(bookEntity);
+
+		// 5. create BookDto and update it with BookEntity data
+		BookDto returnValue = new BookDto();
+		BeanUtils.copyProperties(bookEntity, returnValue);
+		return returnValue;
+	}
+
+	@Override
+	public BookDto addBook(BookEntity entites) {
+
+		BookShelfEntity bookShelfEntity = new BookShelfEntity();
+		int count = (int) entites.getCount();
+
+		for (int i = 0; i < count; i++) {
+
+			bookShelfEntity.setBookId(entites.getBookId());
+			bookShelfEntity.setSerialNo(utils.generatedSerialNumber(20));
+			bookShelfEntity.setAvailable(true);
+		}
 		
+		return mapper.map(bookShelfEntity, BookDto.class);
+
 	}
 
 }

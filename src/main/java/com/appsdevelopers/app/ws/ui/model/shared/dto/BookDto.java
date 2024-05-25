@@ -13,5 +13,6 @@ public class BookDto {
 	private String ISBN;
 	private Float price;
 	private UserDto userDetails;
+	private Long count;
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.appsdevelopers.app.ws.entity.BookEntity;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 
 @Service
@@ -13,10 +14,14 @@ public interface BookService {
 	
 	BookDto getBook(String bookId);
 	
-	BookDto createBook(BookDto book);
+	BookDto addBook(BookDto book);
 
 	BookDto getBookByBookId(String id);
 
 	void deleteBook(String id);
+
+	BookDto updateBookCount(String id, long value);
+	
+	BookDto addBook(BookEntity entites);
 
 }

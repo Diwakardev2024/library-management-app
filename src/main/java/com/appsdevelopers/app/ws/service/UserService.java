@@ -10,4 +10,5 @@ public interface UserService {
 	UserDto createUser(UserDto user);
 	UserDto getUserByUserId(String userId);
 	List<UserDto> getUsers(); 
+	UserDto validateUserId(String userId);
 }
