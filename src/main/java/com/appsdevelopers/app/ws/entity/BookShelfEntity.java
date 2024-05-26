@@ -31,9 +31,6 @@ public class BookShelfEntity implements Serializable {
 	private static final long serialVersionUID = 133533697974231027L;
 
 	@Id
-	@GeneratedValue
-	private long id;
-
 	@Column(length = 40, nullable = false)
 	private String serialNo;
 
@@ -50,7 +47,7 @@ public class BookShelfEntity implements Serializable {
 	private Instant lastUpdatedOn;
 
 	
-	@OneToMany(mappedBy = "bookDetails", cascade = CascadeType.ALL)
-    private List<BookEntity> books;
+//	@OneToMany(mappedBy = "bookDetails", cascade = CascadeType.ALL)
+//    private List<BookEntity> books;
 
 }

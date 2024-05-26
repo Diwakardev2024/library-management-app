@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsdevelopers.app.ws.entity.BookEntity;
+import com.appsdevelopers.app.ws.entity.UserEntity;
 import com.appsdevelopers.app.ws.exceptions.BookServiceException;
 import com.appsdevelopers.app.ws.service.BookService;
 import com.appsdevelopers.app.ws.ui.model.request.BookDetailsRequestModel;
+import com.appsdevelopers.app.ws.ui.model.request.IssueBookRequestModel;
+import com.appsdevelopers.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
 import com.appsdevelopers.app.ws.ui.model.response.LibraryBookResponse;
 import com.appsdevelopers.app.ws.ui.model.response.OperationalStatusModel;
@@ -109,5 +112,22 @@ public class LibraryBookController {
 		returnValue.setOperationResult(RequestOperationaName.SUCCESS.name());
 
 		return returnValue;
+	}
+	
+	@PostMapping(path="/issue-book")
+	public List<LibraryBookResponse> issueBook(@Valid @RequestBody IssueBookRequestModel issuebook)  {
+		
+		LibraryBookResponse returnValue = new LibraryBookResponse();
+		
+		
+		BookDto bookDto = new BookDto();
+//		BeanUtils.copyProperties(bookDetails, bookDto);
+//		BookDto bookDto = mapper.map(bookDetails, BookDto.class);
+		bookService.issueBooks(issuebook.getUserId(), issuebook.getBookIds());
+//		returnValue = mapper.map(createdBook, LibraryBookResponse.class);
+
+		
+		
+		return null;
 	}
 }

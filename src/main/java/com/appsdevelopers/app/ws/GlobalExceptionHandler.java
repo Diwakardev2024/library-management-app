@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Object> handleUserServiceException(Exception ex, WebRequest request)
 	{
 		ErrorMessage errorMessagge=new ErrorMessage(new Date(), ex.getMessage());
-		return new ResponseEntity<>(errorMessagge,new HttpHeaders(),HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(errorMessagge,new HttpHeaders(),HttpStatus.INTERNAL_SERVER_ERROR );
 	}
 
 }
