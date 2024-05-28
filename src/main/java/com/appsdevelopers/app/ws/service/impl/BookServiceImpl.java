@@ -9,18 +9,20 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsdevelopers.app.ws.BookShelfRepository;
-import com.appsdevelopers.app.ws.BooksRepository;
-import com.appsdevelopers.app.ws.UserRepository;
 import com.appsdevelopers.app.ws.entity.BookEntity;
 import com.appsdevelopers.app.ws.entity.BookShelfEntity;
 import com.appsdevelopers.app.ws.entity.UserEntity;
 import com.appsdevelopers.app.ws.exceptions.BookServiceException;
 import com.appsdevelopers.app.ws.exceptions.UserServiceException;
+import com.appsdevelopers.app.ws.repositories.BookShelfRepository;
+import com.appsdevelopers.app.ws.repositories.BooksRepository;
+import com.appsdevelopers.app.ws.repositories.UserRepository;
 import com.appsdevelopers.app.ws.service.BookService;
 import com.appsdevelopers.app.ws.shared.Utils;
 import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.IssueBookDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.UserDto;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -75,7 +77,6 @@ public class BookServiceImpl implements BookService {
 
 		BookEntity bookEntity = new BookEntity();
 		mapper.map(book, bookEntity);
-
 		String publicUserId = utils.generatedBookId(30);
 		bookEntity.setBookId(publicUserId);
 		BookEntity storedUserDetails = bookRepository.save(bookEntity);
@@ -83,14 +84,13 @@ public class BookServiceImpl implements BookService {
 		for (long i = 0; i < bookEntity.getCount(); i++) {
 
 			BookShelfEntity bookShelfEntity = new BookShelfEntity();
-			bookShelfEntity.setBookId(bookEntity.getBookId());
 			bookShelfEntity.setSerialNo(utils.generatedSerialNumber(20));
+			bookShelfEntity.setBookDetails(storedUserDetails);
 			bookShelfEntity.setAvailable(true);
 			bookShelfEntity = bookShelfRepository.save(bookShelfEntity);
 		}
 
-		BookDto returnValue = new BookDto();
-		returnValue = mapper.map(storedUserDetails, BookDto.class);
+		BookDto returnValue = mapper.map(storedUserDetails, BookDto.class);
 
 		return returnValue;
 	}
@@ -130,7 +130,6 @@ public class BookServiceImpl implements BookService {
 		for (long i = 0; i < value; i++) {
 
 			BookShelfEntity bookShelfEntity = new BookShelfEntity();
-			bookShelfEntity.setBookId(bookEntity.getBookId());
 			bookShelfEntity.setSerialNo(utils.generatedSerialNumber(20));
 			bookShelfEntity.setAvailable(true);
 			bookShelfEntity = bookShelfRepository.save(bookShelfEntity);
@@ -146,7 +145,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public void issueBooks(String userId, List<String> bookId) {
+	public IssueBookDto issueBooks(String userId, List<String> bookId) {
 
 		// Validate if user exist in the database or not
 		UserEntity user = userRepository.findByUserId(userId);
@@ -157,20 +156,34 @@ public class BookServiceImpl implements BookService {
 		// validate if books are exist in the database
 		List<String> userRequestBookIds = bookId.stream().distinct().collect(Collectors.toList());
 
-		List<BookEntity> books = bookRepository.findAllByBookIdIn(userRequestBookIds);
+//		List<BookEntity> books = bookRepository.findAllByBookIdIn(userRequestBookIds);
 
-		List<BookShelfEntity> bookShelfEntities = bookShelfRepository.findAllByBookIdIn(userRequestBookIds);
-		
+		List<BookShelfEntity> bookShelfEntities = bookShelfRepository.findByBookId(bookId);
+
 		List<BookShelfEntity> booksToBeIssued = new ArrayList<>();
-		
+
 		for (String item : userRequestBookIds) {
-			BookShelfEntity bookShelfEntity = bookShelfEntities.stream().filter(b -> b.getBookId().equals(item)).findFirst().get();
+			BookShelfEntity bookShelfEntity = bookShelfEntities.stream().filter(b -> b.getBookDetails().getBookId().equals(item) && b.isAvailable())
+					.findFirst().get();
+			bookShelfEntity.setAvailable(false);
+			bookShelfEntity.setUserDetails(user);
 			booksToBeIssued.add(bookShelfEntity);
 		}
 		
-		user.setBooks(books);
-		System.out.println(booksToBeIssued);
-		
+		bookShelfRepository.saveAll(booksToBeIssued);
+
+//		user.setBookShelfEntities(booksToBeIssued);
+
+//		IssueBookDto returnValue = new IssueBookDto();
+
+		UserDto userDto = mapper.map(user, UserDto.class);
+
+		IssueBookDto issueBooDto = new IssueBookDto();
+		issueBooDto.setUser(userDto);
+		issueBooDto.setBookShelfEntities(booksToBeIssued);
+
+		return issueBooDto;
+
 		// check books are available in the database
 
 		// each user will take multiplebooks with different book ids.

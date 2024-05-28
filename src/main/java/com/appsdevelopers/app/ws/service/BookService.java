@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.appsdevelopers.app.ws.entity.BookEntity;
-import com.appsdevelopers.app.ws.entity.UserEntity;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.IssueBookDto;
 
 @Service
 public interface BookService {
@@ -23,5 +22,5 @@ public interface BookService {
 
 	BookDto updateBookCount(String id, long value);
 	
-	 void issueBooks(String userId,List<String> bookId);
+	 IssueBookDto issueBooks(String userId,List<String> bookId);
 }

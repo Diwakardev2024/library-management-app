@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class IssueBookRequestModel {
 	
-	@NotNull
+	@NotNull // Bean validation
 	private String userId;
 	
 	@NotNull

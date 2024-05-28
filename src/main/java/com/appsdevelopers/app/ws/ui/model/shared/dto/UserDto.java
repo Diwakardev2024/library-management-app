@@ -11,12 +11,11 @@ public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 4315285507123528767L;
 	
-	private long id;
+//	private long id;
 	private String userId;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
 	private String mobileNo;
-	private List<BookDto> books;
 }

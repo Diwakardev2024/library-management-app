@@ -1,4 +1,4 @@
-package com.appsdevelopers.app.ws;
+package com.appsdevelopers.app.ws.exceptions;
 
 import java.util.Date;
 

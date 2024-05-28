@@ -8,12 +8,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.appsdevelopers.app.ws.UserRepository;
-import com.appsdevelopers.app.ws.entity.BookEntity;
 import com.appsdevelopers.app.ws.entity.UserEntity;
+import com.appsdevelopers.app.ws.repositories.UserRepository;
 import com.appsdevelopers.app.ws.service.UserService;
 import com.appsdevelopers.app.ws.shared.Utils;
-import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.UserDto;
 
 @Service
@@ -34,24 +32,8 @@ public class UserServiceImpl implements UserService {
 		if (userRepository.findByEmail(user.getEmail()) != null)
 			throw new RuntimeException(" Records already exists ");
 
-		if (user != null && user.getBooks() != null) {
-
-			for (int i = 0; i < user.getBooks().size(); i++) {
-
-				BookDto bookDto = user.getBooks().get(i);
-				bookDto.setUserDetails(user);
-				bookDto.setBookId(utils.generatedBookId(30));
-				user.getBooks().set(i, bookDto);
-			}
-
-		}
-
 		UserEntity userEntity = new UserEntity();
 		mapper.map(user, userEntity);
-
-		List<BookEntity> bookEntities = new ArrayList<>();
-
-		userEntity.setBooks(bookEntities);
 
 		String publicUserId = utils.generatedUserId(30);
 		userEntity.setUserId(publicUserId);

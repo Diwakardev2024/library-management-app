@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class BookDto {
 
-	private long id;
 	private String bookId;
 	private String title;
 	private String Author;

@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class LibraryBookResponse {
 	
-	private long id;
 	private String bookId;
 	private String title;
 	private String Author;
