@@ -21,12 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appsdevelopers.app.ws.service.BookService;
 import com.appsdevelopers.app.ws.ui.model.request.BookDetailsRequestModel;
 import com.appsdevelopers.app.ws.ui.model.request.IssueBookRequestModel;
+import com.appsdevelopers.app.ws.ui.model.request.ReturnBookRequestModel;
 import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
 import com.appsdevelopers.app.ws.ui.model.response.IssueBookResponse;
 import com.appsdevelopers.app.ws.ui.model.response.LibraryBookResponse;
 import com.appsdevelopers.app.ws.ui.model.response.OperationalStatusModel;
+import com.appsdevelopers.app.ws.ui.model.response.ReturnBookResponse;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.IssueBookDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.ReturnBookDto;
 
 import jakarta.validation.Valid;
 
@@ -76,6 +79,7 @@ public class LibraryBookController {
 
 		List<LibraryBookResponse> returnValue = new ArrayList<>();
 		List<BookDto> bookDtos = bookService.getBooks();
+		
 		for (BookDto bookdto : bookDtos) {
 
 			LibraryBookResponse bookResponse = new LibraryBookResponse();
@@ -96,7 +100,9 @@ public class LibraryBookController {
 
 		BookDto bookdto = bookService.getBookByBookId(id);
 		returnValue = mapper.map(bookdto, LibraryBookResponse.class);
+		
 		logger.info("Request successfull");
+		
 		return returnValue;
 	}
 
@@ -123,5 +129,20 @@ public class LibraryBookController {
 		issueBookResponse.setBookShelfEntities(issueBookDto.getBookShelfEntities());
 		
 		return issueBookResponse;
+	}
+	
+	@PostMapping(path="/return-book")
+	public ReturnBookResponse returnBook(@Valid @RequestBody ReturnBookRequestModel returnBook ) {
+		
+		ReturnBookResponse returnResponse=new ReturnBookResponse();
+		returnResponse.setUserId(returnBook.getUserId());
+		
+		ReturnBookDto returnBookDto=bookService.returnBooks(returnBook.getUserId(),returnBook.getSerialNo());
+		
+		returnResponse.setBookShelfEntities(returnBookDto.getSerialNo());
+		
+		System.out.println("Books are Successfully submitted ");
+		
+	return returnResponse;	
 	}
 }

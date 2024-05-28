@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.IssueBookDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.ReturnBookDto;
 
 @Service
 public interface BookService {
@@ -23,4 +24,6 @@ public interface BookService {
 	BookDto updateBookCount(String id, long value);
 	
 	 IssueBookDto issueBooks(String userId,List<String> bookId);
+	 
+	 ReturnBookDto returnBooks(String userId,List<String> serialNo);
 }

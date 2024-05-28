@@ -22,6 +22,7 @@ import com.appsdevelopers.app.ws.shared.Utils;
 import com.appsdevelopers.app.ws.ui.model.response.ErrorMessages;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.BookDto;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.IssueBookDto;
+import com.appsdevelopers.app.ws.ui.model.shared.dto.ReturnBookDto;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.UserDto;
 
 @Service
@@ -50,6 +51,7 @@ public class BookServiceImpl implements BookService {
 
 		if (bookEntities == null)
 			throw new RuntimeException("Users not found");
+		
 		for (BookEntity entity : bookEntities) {
 
 			BookDto bookDto = new BookDto();
@@ -163,13 +165,13 @@ public class BookServiceImpl implements BookService {
 		List<BookShelfEntity> booksToBeIssued = new ArrayList<>();
 
 		for (String item : userRequestBookIds) {
-			BookShelfEntity bookShelfEntity = bookShelfEntities.stream().filter(b -> b.getBookDetails().getBookId().equals(item) && b.isAvailable())
-					.findFirst().get();
+			BookShelfEntity bookShelfEntity = bookShelfEntities.stream()
+					.filter(b -> b.getBookDetails().getBookId().equals(item) && b.isAvailable()).findFirst().get();
 			bookShelfEntity.setAvailable(false);
 			bookShelfEntity.setUserDetails(user);
 			booksToBeIssued.add(bookShelfEntity);
 		}
-		
+
 		bookShelfRepository.saveAll(booksToBeIssued);
 
 //		user.setBookShelfEntities(booksToBeIssued);
@@ -178,16 +180,46 @@ public class BookServiceImpl implements BookService {
 
 		UserDto userDto = mapper.map(user, UserDto.class);
 
-		IssueBookDto issueBooDto = new IssueBookDto();
-		issueBooDto.setUser(userDto);
-		issueBooDto.setBookShelfEntities(booksToBeIssued);
+		IssueBookDto issueBookDto = new IssueBookDto();
+		issueBookDto.setUser(userDto);
+		issueBookDto.setBookShelfEntities(booksToBeIssued);
 
-		return issueBooDto;
+		return issueBookDto;
 
 		// check books are available in the database
 
 		// each user will take multiplebooks with different book ids.
 
+	}
+
+	@Override
+	public ReturnBookDto returnBooks(String userId, List<String> serialNo) {
+
+		UserEntity user = userRepository.findByUserId(userId);
+		
+		List<String> userRequestSerialNo = serialNo.stream().distinct().collect(Collectors.toList());
+		
+		List<BookShelfEntity> bookShelfEntities	=bookShelfRepository.findBySerialNo(serialNo);
+	
+		List<BookShelfEntity> booksToBeIssued = new ArrayList<>();
+		
+		for(String item:userRequestSerialNo) {
+			
+			BookShelfEntity bookShelfEntity = bookShelfEntities.stream()
+					.filter(b -> b.getSerialNo().equals(item)).findFirst().get();
+			bookShelfEntity.setAvailable(true);
+			bookShelfEntity.setUserDetails(user);
+			booksToBeIssued.add(bookShelfEntity);
+			
+		}
+		
+		UserDto userDto = mapper.map(user, UserDto.class);
+		ReturnBookDto returnBookDto=new ReturnBookDto();
+		returnBookDto.setUserId(userDto);
+		returnBookDto.setSerialNo(booksToBeIssued);
+
+		
+		return returnBookDto;
 	}
 
 }

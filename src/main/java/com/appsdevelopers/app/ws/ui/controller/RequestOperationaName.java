@@ -2,6 +2,6 @@ package com.appsdevelopers.app.ws.ui.controller;
 
 public enum RequestOperationaName {
 	
-	DELETE, SUCCESS;
+	DELETE, SUCCESS,SUCCESSFULLY_SUBMITED;
 
 }
