@@ -201,22 +201,30 @@ public class BookServiceImpl implements BookService {
 		
 		List<BookShelfEntity> bookShelfEntities	=bookShelfRepository.findBySerialNo(serialNo);
 	
-		List<BookShelfEntity> booksToBeIssued = new ArrayList<>();
+		List<BookShelfEntity> booksToBeReturned = new ArrayList<>();
 		
 		for(String item:userRequestSerialNo) {
 			
 			BookShelfEntity bookShelfEntity = bookShelfEntities.stream()
 					.filter(b -> b.getSerialNo().equals(item)).findFirst().get();
+			if(!bookShelfEntity.isAvailable() ) {
+				
 			bookShelfEntity.setAvailable(true);
 			bookShelfEntity.setUserDetails(user);
-			booksToBeIssued.add(bookShelfEntity);
+		
+			booksToBeReturned.add(bookShelfEntity);
+			}
 			
+			else
+				throw new RuntimeException("User have been already sumbmitted that book Serial Number : " +item); 
 		}
+		
+		 bookShelfRepository.saveAll(booksToBeReturned);
 		
 		UserDto userDto = mapper.map(user, UserDto.class);
 		ReturnBookDto returnBookDto=new ReturnBookDto();
 		returnBookDto.setUserId(userDto);
-		returnBookDto.setSerialNo(booksToBeIssued);
+		returnBookDto.setSerialNo(booksToBeReturned);
 
 		
 		return returnBookDto;
