@@ -2,6 +2,7 @@ package com.appsdevelopers.app.ws.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto createUser(UserDto user) {
+		
+//		Optional<UserEntity> userOpt = userRepository.findByEmail(user.getEmail());
+//		userOpt.orElseThrow(() -> new RuntimeException(" Records already exists "));
 
 		if (userRepository.findByEmail(user.getEmail()) != null)
 			throw new RuntimeException(" Records already exists ");
