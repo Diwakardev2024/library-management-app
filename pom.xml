@@ -92,12 +92,6 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.nexgenvision</groupId>
-			<artifactId>mobile-app-ws</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>
