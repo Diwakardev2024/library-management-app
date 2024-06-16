@@ -8,7 +8,9 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,6 +41,7 @@ public class LibraryBookController {
 
 	private static final Logger logger = LogManager.getLogger(LibraryBookController.class);
 	@Autowired
+	@Qualifier(value = "online-book")
 	BookService bookService;
 
 	@Autowired

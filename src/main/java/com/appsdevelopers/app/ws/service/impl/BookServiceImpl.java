@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.appsdevelopers.app.ws.entity.BookEntity;
@@ -26,6 +28,8 @@ import com.appsdevelopers.app.ws.ui.model.shared.dto.ReturnBookDto;
 import com.appsdevelopers.app.ws.ui.model.shared.dto.UserDto;
 
 @Service
+@Scope("singleton")
+@Qualifier(value = "offline-book")
 public class BookServiceImpl implements BookService {
 
 	@Autowired
